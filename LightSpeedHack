@@ -1,0 +1,28 @@
+#!/bin/sh
+clear
+echo "What would you like to do?"
+echo "  1)Disable Lightspeed"
+echo "  2)Enable Lightspeed"
+echo "  3)Exit"
+
+
+read -n 1 n
+case $n in
+  1) 
+  clear
+  echo "Disabling Lightspeed..."
+  sudo /Applications/Lightspeed\ Agent.app/Contents/MacOS/Lightspeed\ Agent -h
+  sudo launchctl unload /Library/LaunchDaemons/com.lightspeedsystems.*
+  clear
+  echo "🔔✓ Lightspeed disabled.";;
+  2) echo "Enabling Lightspeed..."
+  sudo /Applications/Lightspeed\ Agent.app/Contents/MacOS/Lightspeed\ Agent & agent_pid="$!"
+  sleep 3
+  sudo kill -9 $agent_pid
+  sudo launchctl start /Library/LaunchDaemons/com.lightspeedsystems.*
+  clear
+  echo "🔔✓ Lightspeed Enabled, Please Restart for Full effect";;
+  3) clear
+  exit;;
+  *) echo "invalid option";;
+esac
